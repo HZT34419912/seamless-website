@@ -1,0 +1,1027 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEAMLESS - Wireframe Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    /* ============================================
+       LANGUAGE SWITCHER
+       ============================================ */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+
+    .lang-btn {
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      padding: 6px 10px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 3px;
+      background: transparent;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .lang-btn:hover,
+    .lang-btn.active {
+      color: #ffffff;
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .lang-btn.active {
+      border-color: #ffffff;
+    }
+
+    /* ============================================
+       PAGE 1: ENTRY / LANDING PAGE
+       ============================================ */
+    .entry-page {
+      position: fixed;
+      inset: 0;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+      transition: opacity 0.8s ease, visibility 0.8s ease, pointer-events 0.8s ease;
+    }
+
+    .entry-page.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .entry-logo {
+      width: 300px;
+      height: 300px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: breathe 3s ease-in-out infinite;
+      position: relative;
+    }
+
+    .entry-logo::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      animation: pulse-ring 3s ease-in-out infinite;
+    }
+
+    .entry-logo-text {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 8px;
+      color: #ffffff;
+    }
+
+    .entry-hint {
+      margin-top: 60px;
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      animation: fade-hint 2s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.08); opacity: 0.9; }
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.3); opacity: 0; }
+    }
+
+    @keyframes fade-hint {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* ============================================
+       PAGE 2: MAIN PAGE
+       ============================================ */
+    .main-page {
+      min-height: 100vh;
+      background: #0a0a0a;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .main-page.visible {
+      opacity: 1;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      background: rgba(10,10,10,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      z-index: 50;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .nav-logo {
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+    }
+
+    .nav-logo span {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #ffffff;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-cta {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 2px;
+      color: #ffffff;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .nav-cta:hover {
+      background: #ffffff;
+      color: #0a0a0a;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 60px 80px;
+      position: relative;
+    }
+
+    .hero-tag {
+      font-size: 11px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 30px;
+    }
+
+    .hero-title {
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 300;
+      letter-spacing: -2px;
+      text-align: center;
+      line-height: 1.1;
+      margin-bottom: 40px;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      max-width: 500px;
+      text-align: center;
+      line-height: 1.8;
+      margin-bottom: 60px;
+    }
+
+    .hero-video-placeholder {
+      width: 100%;
+      max-width: 1000px;
+      aspect-ratio: 16/9;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-video-placeholder::before {
+      content: 'VIDEO';
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .play-button {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .play-button:hover {
+      background: rgba(255,255,255,0.1);
+      transform: scale(1.1);
+    }
+
+    .play-button::after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 20px solid #ffffff;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      margin-left: 5px;
+    }
+
+    /* Section Title Template */
+    .section-header {
+      padding: 100px 60px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 300;
+      letter-spacing: -1px;
+    }
+
+    /* ============================================
+       PRODUCTS SECTION - 3 CARD LAYOUT
+       ============================================ */
+    .products-section {
+      padding: 0 60px 120px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .products-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .product-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .product-card:hover {
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-8px);
+    }
+
+    .product-image {
+      aspect-ratio: 4/3;
+      background: rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .product-image span {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.2);
+      text-transform: uppercase;
+    }
+
+    .product-info {
+      padding: 30px;
+    }
+
+    .product-name {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .product-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       PRODUCTS SECTION - 2 COL LARGE + SMALL
+       ============================================ */
+    .products-section-2 {
+      padding: 0 60px 120px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .products-grid-2l {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+    }
+
+    .products-side-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    /* ============================================
+       PHILOSOPHY SECTION
+       ============================================ */
+    .philosophy-section {
+      padding: 100px 60px;
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .philosophy-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 60px;
+    }
+
+    .philosophy-item {
+      padding: 40px;
+      border-left: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .philosophy-item:first-child {
+      border-left: none;
+      padding-left: 0;
+    }
+
+    .philosophy-word {
+      font-size: 48px;
+      font-weight: 600;
+      letter-spacing: -2px;
+      margin-bottom: 30px;
+      opacity: 0.8;
+    }
+
+    .philosophy-word span {
+      color: rgba(255,255,255,0.3);
+    }
+
+    .philosophy-title {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .philosophy-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.8;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: 80px 60px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .footer-brand {
+      max-width: 300px;
+    }
+
+    .footer-brand .nav-logo {
+      margin-bottom: 20px;
+    }
+
+    .footer-brand p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 80px;
+    }
+
+    .footer-col h4 {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      margin-bottom: 12px;
+      transition: color 0.3s;
+    }
+
+    .footer-col a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 60px auto 0;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 1px;
+    }
+
+    /* ============================================
+       WIREFRAME ANNOTATIONS (dev only)
+       ============================================ */
+    .wireframe-label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #0066ff;
+      color: white;
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 2px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      z-index: 10;
+    }
+
+    .product-image,
+    .hero-video-placeholder {
+      position: relative;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .products-grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .products-grid-2l {
+        grid-template-columns: 1fr;
+      }
+
+      .philosophy-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .philosophy-item {
+        border-left: none;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding: 30px 0 0;
+      }
+
+      .philosophy-item:first-child {
+        border-top: none;
+        padding-top: 0;
+      }
+
+      .nav {
+        padding: 0 30px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 120px 30px 80px;
+      }
+
+      .section-header,
+      .products-section,
+      .products-section-2 {
+        padding-left: 30px;
+        padding-right: 30px;
+      }
+
+      .footer {
+        padding: 60px 30px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 40px;
+      }
+
+      .footer-links {
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      .nav-left {
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .products-grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .entry-logo {
+        width: 200px;
+        height: 200px;
+      }
+
+      .entry-logo-text {
+        font-size: 18px;
+      }
+
+      .nav-right {
+        gap: 10px;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .lang-btn {
+        padding: 4px 6px;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       PAGE 1: ENTRY / LANDING PAGE
+       ============================================ -->
+  <div class="entry-page" id="entryPage" onmouseup="this.classList.add('hidden');document.getElementById('mainPage').classList.add('visible');">
+    <!-- Logo 鍦ㄥ叆鍙ｉ〉鍐咃紝鍙互鐐瑰嚮 -->
+    <div class="entry-logo" id="entryLogo" onmouseup="event.stopPropagation();this.parentNode.classList.add('hidden');document.getElementById('mainPage').classList.add('visible');">
+      <span class="entry-logo-text">SEAMLESS</span>
+    </div>
+    <p class="entry-hint" data-i18n="entry_hint">Tap to Enter</p>
+  </div>
+
+  <!-- ============================================
+       PAGE 2: MAIN PAGE
+       ============================================ -->
+  <div class="main-page" id="mainPage">
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="nav-left">
+        <div class="nav-logo">
+          <span>SEAMLESS</span>
+        </div>
+        <div class="nav-links">
+          <a href="#products" data-i18n="nav_products">Products</a>
+          <a href="#philosophy" data-i18n="nav_philosophy">Philosophy</a>
+          <a href="#contact" data-i18n="nav_contact">Contact</a>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
+          <button class="lang-btn" data-lang="zh" onclick="setLanguage('zh')">涓枃</button>
+          <button class="lang-btn" data-lang="ja" onclick="setLanguage('ja')">鏃ユ湰瑾?/button>
+        </div>
+        <a href="#contact" class="nav-cta" data-i18n="nav_cta">Get Quote</a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <span class="hero-tag" data-i18n="hero_tag">Automotive Performance Parts</span>
+      <h1 class="hero-title" data-i18n="hero_title">Design Without<br>Compromise</h1>
+      <p class="hero-subtitle" data-i18n="hero_subtitle">
+        Every curve is precisely calculated. Every joint pursues perfection.
+      </p>
+      <div class="hero-video-placeholder">
+        <span class="wireframe-label">VIDEO</span>
+        <div class="play-button"></div>
+      </div>
+    </section>
+
+    <!-- Products Section 1 - 3 Column Grid -->
+    <div class="section-header">
+      <span class="section-label">01</span>
+      <h2 class="section-title" data-i18n="section1_title">Product Lines</h2>
+    </div>
+
+    <section class="products-section" id="products">
+      <div class="products-grid-3">
+        <div class="product-card">
+          <div class="product-image">
+            <span class="wireframe-label">PRODUCT 01</span>
+          </div>
+          <div class="product-info">
+            <h3 class="product-name" data-i18n="product1_name">Front Splitter Series</h3>
+            <p class="product-desc" data-i18n="product1_desc">Reduces visual center of gravity and enhances downforce. Every curve validated through aerodynamic testing.</p>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-image">
+            <span class="wireframe-label">PRODUCT 02</span>
+          </div>
+          <div class="product-info">
+            <h3 class="product-name" data-i18n="product2_name">Side Skirt Series</h3>
+            <p class="product-desc" data-i18n="product2_desc">Optimizes underbody airflow, reduces drag coefficient. Visually lower, more aggressive stance.</p>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-image">
+            <span class="wireframe-label">PRODUCT 03</span>
+          </div>
+          <div class="product-info">
+            <h3 class="product-name" data-i18n="product3_name">Rear Wing Series</h3>
+            <p class="product-desc" data-i18n="product3_desc">Perfect balance of high-speed stability and aesthetic design. Adjustable angle for diverse needs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Section 2 - 2 Large + Small Stack -->
+    <div class="section-header" style="padding-top: 60px;">
+      <span class="section-label">02</span>
+      <h2 class="section-title" data-i18n="section2_title">Render Gallery</h2>
+    </div>
+
+    <section class="products-section-2">
+      <div class="products-grid-2l">
+        <div class="product-card">
+          <div class="product-image" style="aspect-ratio: 16/10;">
+            <span class="wireframe-label">RENDER 01 (Large)</span>
+          </div>
+          <div class="product-info">
+            <h3 class="product-name" data-i18n="render1_name">Full Body Kit</h3>
+            <p class="product-desc" data-i18n="render1_desc">Integrated aero package designed for high-performance sports cars. From front bumper to rear diffuser, seamless joints throughout.</p>
+          </div>
+        </div>
+
+        <div class="products-side-stack">
+          <div class="product-card">
+            <div class="product-image" style="aspect-ratio: 1/1;">
+              <span class="wireframe-label">RENDER 02</span>
+            </div>
+            <div class="product-info">
+              <h3 class="product-name" data-i18n="render2_name">Detail Close-up</h3>
+              <p class="product-desc" data-i18n="render2_desc">The dialogue of material and light</p>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-image" style="aspect-ratio: 1/1;">
+              <span class="wireframe-label">RENDER 03</span>
+            </div>
+            <div class="product-info">
+              <h3 class="product-name" data-i18n="render3_name">Installation View</h3>
+              <p class="product-desc" data-i18n="render3_desc">Modular quick-mount design</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="philosophy-section" id="philosophy">
+      <div class="philosophy-inner">
+        <div class="philosophy-item">
+          <div class="philosophy-word">PO<span>E</span>TIC</div>
+          <h4 class="philosophy-title" data-i18n="phil1_title">Respect Original Design</h4>
+          <p class="philosophy-desc" data-i18n="phil1_desc">
+            We respect the original design intent, optimizing based on a thorough understanding of the vehicle's design logic. We don't simply "add on" 鈥?we dialogue with the original design to find the most appropriate evolutionary path.
+          </p>
+        </div>
+
+        <div class="philosophy-item">
+          <div class="philosophy-word">DUR<span>A</span>BLE</div>
+          <h4 class="philosophy-title" data-i18n="phil2_title">Power of Design</h4>
+          <p class="philosophy-desc" data-i18n="phil2_desc">
+            Function and aesthetics are never at odds. We employ systematic PQ/DQ optimization methods, ensuring every modification preserves original functionality. Extreme industrial design is our faith.
+          </p>
+        </div>
+
+        <div class="philosophy-item">
+          <div class="philosophy-word">BRA<span>V</span>E</div>
+          <h4 class="philosophy-title" data-i18n="phil3_title">Freedom for Users</h4>
+          <p class="philosophy-desc" data-i18n="phil3_desc">
+            Modular design grants users freedom 鈥?multiple configuration options, easy installation, minimal logistics costs. Standardized production, responsible to every user.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="nav-logo">
+            <span>SEAMLESS</span>
+          </div>
+          <p data-i18n="footer_desc">Every curve is precisely calculated. Every joint pursues perfection.</p>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4 data-i18n="footer_products">Products</h4>
+            <a href="#" data-i18n="footer_p1">Front Splitter</a>
+            <a href="#" data-i18n="footer_p2">Side Skirt</a>
+            <a href="#" data-i18n="footer_p3">Rear Wing</a>
+            <a href="#" data-i18n="footer_p4">Intake Kit</a>
+          </div>
+
+          <div class="footer-col">
+            <h4 data-i18n="footer_about">About</h4>
+            <a href="#" data-i18n="footer_a1">Philosophy</a>
+            <a href="#" data-i18n="footer_a2">Process</a>
+            <a href="#" data-i18n="footer_a3">Partners</a>
+          </div>
+
+          <div class="footer-col">
+            <h4 data-i18n="footer_contact">Contact</h4>
+            <a href="#" data-i18n="footer_c1">Business</a>
+            <a href="#" data-i18n="footer_c2">Support</a>
+            <a href="#" data-i18n="footer_c3">Media</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>漏 2026 SEAMLESS. All rights reserved.</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // ============================================
+    // LANGUAGE DATA
+    // ============================================
+    const translations = {
+      en: {
+        entry_hint: "Tap to Enter",
+        nav_products: "Products",
+        nav_philosophy: "Philosophy",
+        nav_contact: "Contact",
+        nav_cta: "Get Quote",
+        hero_tag: "Automotive Performance Parts",
+        hero_title: "Design Without<br>Compromise",
+        hero_subtitle: "Every curve is precisely calculated. Every joint pursues perfection.",
+        section1_title: "Product Lines",
+        product1_name: "Front Splitter Series",
+        product1_desc: "Reduces visual center of gravity and enhances downforce. Every curve validated through aerodynamic testing.",
+        product2_name: "Side Skirt Series",
+        product2_desc: "Optimizes underbody airflow, reduces drag coefficient. Visually lower, more aggressive stance.",
+        product3_name: "Rear Wing Series",
+        product3_desc: "Perfect balance of high-speed stability and aesthetic design. Adjustable angle for diverse needs.",
+        section2_title: "Render Gallery",
+        render1_name: "Full Body Kit",
+        render1_desc: "Integrated aero package designed for high-performance sports cars. From front bumper to rear diffuser, seamless joints throughout.",
+        render2_name: "Detail Close-up",
+        render2_desc: "The dialogue of material and light",
+        render3_name: "Installation View",
+        render3_desc: "Modular quick-mount design",
+        phil1_title: "Respect Original Design",
+        phil1_desc: "We respect the original design intent, optimizing based on a thorough understanding of the vehicle's design logic. We don't simply \"add on\" 鈥?we dialogue with the original design to find the most appropriate evolutionary path.",
+        phil2_title: "Power of Design",
+        phil2_desc: "Function and aesthetics are never at odds. We employ systematic PQ/DQ optimization methods, ensuring every modification preserves original functionality. Extreme industrial design is our faith.",
+        phil3_title: "Freedom for Users",
+        phil3_desc: "Modular design grants users freedom 鈥?multiple configuration options, easy installation, minimal logistics costs. Standardized production, responsible to every user.",
+        footer_desc: "Every curve is precisely calculated. Every joint pursues perfection.",
+        footer_products: "Products",
+        footer_p1: "Front Splitter",
+        footer_p2: "Side Skirt",
+        footer_p3: "Rear Wing",
+        footer_p4: "Intake Kit",
+        footer_about: "About",
+        footer_a1: "Philosophy",
+        footer_a2: "Process",
+        footer_a3: "Partners",
+        footer_contact: "Contact",
+        footer_c1: "Business",
+        footer_c2: "Support",
+        footer_c3: "Media"
+      },
+      zh: {
+        entry_hint: "鐐瑰嚮杩涘叆",
+        nav_products: "浜у搧",
+        nav_philosophy: "鐞嗗康",
+        nav_contact: "鑱旂郴",
+        nav_cta: "鑾峰彇鎶ヤ环",
+        hero_tag: "姹借溅鎬ц兘鏀硅浠?,
+        hero_title: "璁捐<br>浠庝笉濡ュ崗",
+        hero_subtitle: "姣忎竴澶勭嚎鏉￠兘缁忚繃绮惧瘑璁＄畻锛屾瘡涓€澶勮鎺ラ兘杩芥眰瀹岀編鏃犵憰銆?,
+        section1_title: "浜у搧绯诲垪",
+        product1_name: "鍓嶉摬绯诲垪",
+        product1_desc: "闄嶄綆瑙嗚閲嶅績锛屽寮轰笅鍘嬪姏锛屾瘡涓€澶勫姬搴﹂兘缁忚繃绌烘皵鍔ㄥ姏瀛﹂獙璇併€?,
+        product2_name: "渚ц绯诲垪",
+        product2_desc: "浼樺寲杞﹁韩搴曢儴姘旀祦锛岄檷浣庨闃荤郴鏁帮紝瑙嗚涓婃洿鏄句綆瓒磋繍鍔ㄣ€?,
+        product3_name: "灏剧考绯诲垪",
+        product3_desc: "楂橀€熺ǔ瀹氭€т笌缇庡璁捐鐨勫畬缇庡钩琛★紝鍙皟瑙掑害璁捐婊¤冻涓嶅悓闇€姹傘€?,
+        section2_title: "娓叉煋灞曠ず",
+        render1_name: "鏁磋溅韬浠?,
+        render1_desc: "涓撲负楂樻€ц兘璺戣溅璁捐鐨勪竴浣撳寲鍖呭洿鏂规锛屼粠鍓嶆潬鍒板悗鎵╂暎鍣紝姣忎竴澶勮鎺ヤ弗涓濆悎缂濄€?,
+        render2_name: "缁嗚妭鐗瑰啓",
+        render2_desc: "鏉愯川涓庡厜绾跨殑瀵硅瘽",
+        render3_name: "瀹夎绀烘剰",
+        render3_desc: "妯″潡鍖栧揩瑁呰璁?,
+        phil1_title: "灏婇噸鍘熷巶璁捐",
+        phil1_desc: "灏婇噸鍘熷巶璁捐鎰忓浘锛屽湪鍏呭垎鐞嗚В鍘熻溅璁捐閫昏緫鐨勫熀纭€涓婅繘琛屼紭鍖栥€傛垜浠笉鍋氱畝鍗曠殑"鍔犳硶"锛岃€屾槸涓庡師璁捐瀵硅瘽锛屾壘鍒版渶鎭板綋鐨勮繘鍖栬矾寰勩€?,
+        phil2_title: "璁捐鐨勫姏閲?,
+        phil2_desc: "鍔熻兘涓庣編瀛︿粠涓嶅绔嬨€傛垜浠噰鐢ㄧ郴缁熸€т紭鍖栨柟娉曪紝璁╂瘡涓€澶勬敼瑁呴兘涓嶇壓鐗插師鍘傚姛鑳姐€傛瀬鑷村伐涓氳璁★紝鏄垜浠殑淇′话銆?,
+        phil3_title: "鐢ㄦ埛鐨勮嚜鐢?,
+        phil3_desc: "妯″潡鍖栬璁¤祴浜堢敤鎴疯嚜鐢扁€斺€斿绉嶆惌閰嶆柟妗堛€佷究鎹锋媶瑁呫€佹渶浣庣墿娴佹垚鏈€傛爣鍑嗗寲鐢熶骇锛屽姣忎竴浣嶇敤鎴疯礋璐ｃ€?,
+        footer_desc: "姣忎竴澶勭嚎鏉￠兘缁忚繃绮惧瘑璁＄畻锛屾瘡涓€澶勮鎺ラ兘杩芥眰瀹岀編鏃犵憰銆?,
+        footer_products: "浜у搧",
+        footer_p1: "鍓嶉摬绯诲垪",
+        footer_p2: "渚ц绯诲垪",
+        footer_p3: "灏剧考绯诲垪",
+        footer_p4: "杩涙皵濂椾欢",
+        footer_about: "鍏充簬",
+        footer_a1: "鍝佺墝鐞嗗康",
+        footer_a2: "鐢熶骇宸ヨ壓",
+        footer_a3: "鍚堜綔浼欎即",
+        footer_contact: "鑱旂郴",
+        footer_c1: "鍟嗗姟鍚堜綔",
+        footer_c2: "鎶€鏈敮鎸?,
+        footer_c3: "濯掍綋鑱旂郴"
+      },
+      ja: {
+        entry_hint: "銈裤儍銉椼仐銇﹀叆鍫?,
+        nav_products: "瑁藉搧",
+        nav_philosophy: "鍝插",
+        nav_contact: "銇婂晱銇勫悎銈忋仜",
+        nav_cta: "瑕嬬渚濋牸",
+        hero_tag: "闆板洸銉戙儠銈┿兗銉炪兂銈广儜銉笺儎",
+        hero_title: "濡ュ崝銇亶<br>銉囥偠銈ゃ兂",
+        hero_subtitle: "銇欍伖銇︺伄銈兗銉栥伅绮惧瘑銇▓绠椼仌銈屻仸銇勩伨銇欍€傘仚銇广仸銇帴鍚堥儴銇畬鐠с倰杩芥眰銇椼仸銇勩伨銇欍€?,
+        section1_title: "瑁藉搧銈枫儶銉笺偤",
+        product1_name: "銉曘儹銉炽儓銈广儣銉儍銈裤兗",
+        product1_desc: "瑕栬鐨勯噸蹇冦倰浣庛亸銇椼€併儉銈︺兂銉曘偐銉笺偣銈掑鍔犮€傜┖鍔涙瑷兼笀銇裤伄鏇茬窔瑷▓銆?,
+        product2_name: "銈点偆銉夈偣銈兗銉?,
+        product2_desc: "銈兂銉€銉笺儨銉囥偅銇皸娴併倰鏈€閬╁寲銆併儔銉┿儍銈颁總鏁般倰浣庢笡銆傝瑕氱殑銇洿浣庛亸銇倠銈广偪銈ゃ儷銆?,
+        product3_name: "銉偄銈︺偅銉炽偘",
+        product3_desc: "楂橀€熷畨瀹氭€с仺缇庡銇畬鐠с仾銉愩儵銉炽偣銆傝搴﹁鏁村彲鑳姐仹妲樸€呫仾銉嬨兗銈恒伀瀵惧繙銆?,
+        section2_title: "銉兂銉€銉笺偖銉ｃ儵銉兗",
+        render1_name: "銉曘儷銉溿儑銈ｃ偔銉冦儓",
+        render1_desc: "銉忋偆銉戙儠銈┿兗銉炪兂銈广偣銉濄兗銉勩偒銉煎悜銇戙伀瑷▓銇曘倢銇熺当鍚堢┖鍔涖儜銉冦偙銉笺偢銆傘儠銉兂銉堛亱銈夈儶銈儑銈ｃ儠銉ャ兗銈躲兗銇俱仹銆併偡銉笺儬銉偣銇帴鍚堛€?,
+        render2_name: "銉囥偅銉嗐兗銉偗銉兗銈恒偄銉冦儣",
+        render2_desc: "绱犳潗銇ㄥ厜銇瑭?,
+        render3_name: "鍙栦粯銇戙偆銉°兗銈?,
+        render3_desc: "銉偢銉ャ儵銉笺偗銈ゃ儍銈優銈︺兂銉堣ō瑷?,
+        phil1_title: "銈儶銈搞儕銉儑銈躲偆銉炽倰灏婇噸",
+        phil1_desc: "鍏冦伄銉囥偠銈ゃ兂銇剰鍥炽倰灏婇噸銇椼€佽粖瑷▓銇儹銈搞儍銈倰鍗佸垎銇悊瑙ｃ仐銇熶笂銇ф渶閬╁寲銆傛垜浠笉鍋氱畝鍗曠殑"鍔犳硶"锛岃€屾槸涓庡師璁捐瀵硅瘽锛屾壘鍒版渶鎭板綋鐨勮繘鍖栬矾寰勩€?,
+        phil2_title: "銉囥偠銈ゃ兂銇姏",
+        phil2_desc: "姗熻兘銇ㄧ編瀛︺伅姹恒仐銇﹀绔嬨仐銇俱仜銈撱€傜郴缁熺殑銇渶閬╁寲鎵嬫硶銈掓帯鐢ㄣ仐銆併仚銇广仸銇敼閫犮亴鍏冦伄姗熻兘銈掍繚鎸併仚銈嬨亾銇ㄣ倰淇濊銆傛サ闄愩伄宸ユキ銉囥偠銈ゃ兂銇銇熴仭銇俊浠般仹銇欍€?,
+        phil3_title: "銉︺兗銈躲兗銇嚜鐢?,
+        phil3_desc: "銉偢銉ャ儵銉艰ō瑷堛伅銉︺兗銈躲兗銇嚜鐢便倰涓庛亪銇俱仚鈥斺€旇鏁般伄妲嬫垚銈儣銈枫儳銉炽€佹槗銇椼亜鍙栦粯銇戙€佹渶灏忛檺銇墿娴併偝銈广儓銆傛婧栧寲銇曘倢銇熺敓鐢ｃ€併仚銇广仸銇儲銉笺偠銉笺伀璨换銈掓寔銇°伨銇欍€?,
+        footer_desc: "銇欍伖銇︺伄銈兗銉栥伅绮惧瘑銇▓绠椼仌銈屻仸銇勩伨銇欍€傘仚銇广仸銇帴鍚堥儴銇畬鐠с倰杩芥眰銇椼仸銇勩伨銇欍€?,
+        footer_products: "瑁藉搧",
+        footer_p1: "銉曘儹銉炽儓銈广儣銉儍銈裤兗",
+        footer_p2: "銈点偆銉夈偣銈兗銉?,
+        footer_p3: "銉偄銈︺偅銉炽偘",
+        footer_p4: "銈ゃ兂銉嗐兗銈偔銉冦儓",
+        footer_about: "浼氱ぞ姒傝",
+        footer_a1: "銉栥儵銉炽儔鍝插",
+        footer_a2: "瑁介€犲伐绋?,
+        footer_a3: "銉戙兗銉堛儕銉?,
+        footer_contact: "銇婂晱銇勫悎銈忋仜",
+        footer_c1: "銉撱偢銉嶃偣",
+        footer_c2: "銈点儩銉笺儓",
+        footer_c3: "銉°儑銈ｃ偄"
+      }
+    };
+
+    // ============================================
+    // LANGUAGE SWITCHER
+    // ============================================
+    function setLanguage(lang) {
+      const t = translations[lang];
+      if (!t) {
+        alert('Language not found: ' + lang);
+        return;
+      }
+
+      // Update all elements with data-i18n attribute
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) {
+          el.innerHTML = t[key];
+        }
+      });
+
+      // Update active button
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+
+      // Update HTML lang attribute
+      document.documentElement.lang = lang === 'ja' ? 'ja' : (lang === 'zh' ? 'zh-CN' : 'en');
+    }
+  </script>
+
+</body>
+</html>
