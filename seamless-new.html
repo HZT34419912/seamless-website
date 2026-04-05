@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEAMLESS - Wireframe Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #000000; color: #ffffff; overflow-x: hidden; }
+
+    /* Language Switcher */
+    .lang-switcher { display: flex; align-items: center; gap: 8px; position: relative; }
+    .lang-btn { font-size: 11px; letter-spacing: 1px; color: rgba(255,255,255,0.5); cursor: pointer; padding: 6px 10px; border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; background: transparent; transition: all 0.3s; font-family: inherit; }
+    .lang-btn:hover, .lang-btn.active { color: #ffffff; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
+    .lang-btn.active { border-color: #ffffff; background: rgba(100,100,100,0.5) !important; }
+
+    /* Main Page */
+    .main-page { opacity: 0; transition: opacity 0.5s ease; }
+    .main-page.visible { opacity: 1; }
+
+    /* Navigation */
+    .nav { position: fixed; top: 0; left: 0; right: 0; height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; background: rgba(10,10,10,0.9); backdrop-filter: blur(20px); z-index: 50; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .nav-left { display: flex; align-items: center; gap: 60px; }
+    .nav-logo { font-size: 18px; font-weight: 700; letter-spacing: 4px; }
+    .nav-links { display: flex; gap: 40px; }
+    .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; letter-spacing: 1px; transition: color 0.3s; }
+    .nav-links a:hover { color: #ffffff; }
+    .nav-right { display: flex; align-items: center; gap: 30px; }
+    .nav-cta { padding: 10px 24px; background: #ffffff; color: #0a0a0a; text-decoration: none; font-size: 12px; letter-spacing: 1px; font-weight: 500; transition: transform 0.3s; }
+    .nav-cta:hover { transform: scale(1.05); }
+
+    /* Hero */
+    .hero { min-height: 100vh; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 120px 60px 60px; text-align: center; overflow: hidden; }
+    .hero-video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+    .hero-video-container video { width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
+    .hero-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; }
+    .mute-btn { position: fixed; top: 100px; right: 60px; width: 44px; height: 44px; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.3); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1000; transition: all 0.3s; }
+    .mute-btn:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+    .mute-btn svg { width: 20px; height: 20px; fill: #fff; opacity: 0.8; }
+    .mute-btn:hover svg { opacity: 1; }
+    .hero-tag { font-size: 12px; letter-spacing: 3px; color: rgba(255,255,255,0.8); margin-bottom: 30px; }
+    .hero-title { font-size: 80px; font-weight: 700; line-height: 1.1; letter-spacing: -2px; margin-bottom: 30px; }
+    .hero-title.en { font-weight: 700; }
+    .hero-subtitle { font-size: 16px; color: rgba(255,255,255,0.8); max-width: 500px; line-height: 1.8; text-align: center; }
+    .hero-video-placeholder { margin-top: 60px; width: 100%; max-width: 800px; aspect-ratio: 16/9; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; position: relative; }
+    .wireframe-label { font-size: 12px; letter-spacing: 2px; color: rgba(255,255,255,0.3); }
+    .play-button { width: 60px; height: 60px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; position: absolute; }
+    .play-button::before { content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-40%, -50%); border-left: 15px solid rgba(255,255,255,0.5); border-top: 10px solid transparent; border-bottom: 10px solid transparent; }
+
+    /* Sections */
+    .section-header { display: flex; align-items: center; gap: 20px; padding: 60px 60px 30px; }
+    .section-label { letter-spacing: 2px; color: rgba(255,255,255,0.3); }
+    .section-title { font-size: 24px; letter-spacing: 2px; }
+
+    /* Inspiration Grid */
+    .inspiration-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; padding: 0 60px; }
+    .inspiration-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: all 0.3s; overflow: hidden; position: relative; }
+    .inspiration-card:hover { border-color: rgba(255,255,255,0.3); }
+    .inspiration-image { aspect-ratio: 16/9; background-size: cover; background-position: center; display: flex; align-items: flex-end; justify-content: flex-start; position: relative; padding: 20px; }
+    .inspiration-image::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%); }
+    .inspiration-label { position: relative; z-index: 1; font-size: 14px; font-weight: 500; letter-spacing: 2px; color: #ffffff; text-align: left; padding-bottom: 10px; padding-left: 20px; }
+    .inspiration-label::after { content: ''; position: absolute; bottom: 0; left: 20px; width: 150px; height: 0.5px; background: #ffffff; }
+
+    /* Products Grid */
+    .products-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; padding: 0 60px; }
+    .product-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
+    .product-image { aspect-ratio: 4/3; background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: center; }
+    .product-image img { width: 100%; height: 100%; object-fit: cover; }
+    .product-info { padding: 30px; }
+    .product-name { font-size: 18px; font-weight: 600; margin-bottom: 15px; letter-spacing: 1px; }
+    .product-desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.8; }
+
+    /* Philosophy */
+    .philosophy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 60px; }
+    .phil-card { padding: 40px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
+    .phil-img { width: 100%; aspect-ratio: 16/9; background: rgba(255,255,255,0.03); margin-bottom: 30px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); font-size: 12px; }
+    .phil-img img { width: 100%; height: 100%; object-fit: cover; }
+    .phil-number { font-size: 64px; font-weight: 700; color: rgba(255,255,255,0.1); margin-bottom: 20px; }
+    .phil-title { font-size: 18px; font-weight: 600; margin-bottom: 15px; }
+    .phil-desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.8; }
+
+    /* Footer */
+    .footer { background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); padding: 60px; margin-top: 60px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+    .footer-brand { font-size: 18px; font-weight: 700; letter-spacing: 4px; margin-bottom: 20px; }
+    .footer-desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.8; max-width: 300px; }
+    .footer h4 { font-size: 12px; letter-spacing: 2px; color: rgba(255,255,255,0.3); margin-bottom: 20px; }
+    .footer ul { list-style: none; }
+    .footer li { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+
+    @media (max-width: 768px) {
+      .nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero-title { font-size: 40px; }
+      .products-grid-3, .philosophy-grid { grid-template-columns: 1fr; padding: 0 20px; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+    <!-- Main Page -->
+    <div class="main-page visible" id="mainPage">
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="nav-left">
+        <div class="nav-logo"><a href="#main" style="text-decoration:none;color:inherit;"><img src="logo-C.png" alt="SEAMLESS" style="width:120px;"></a></div>
+        <div class="nav-links">
+          <a href="#inspiration" data-i18n="nav_inspiration">Inspiration</a>
+          <a href="#products" data-i18n="nav_products">Products</a>
+          <a href="#philosophy" data-i18n="nav_philosophy">Philosophy</a>
+          <a href="#contact" data-i18n="nav_contact">Contact</a>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" id="btn-en" data-lang="en">EN</button>
+          <button class="lang-btn" id="btn-zh" data-lang="zh">中文</button>
+          <button class="lang-btn" id="btn-ja" data-lang="ja">日本語</button>
+        </div>
+        <a href="partner.html" class="nav-cta" data-i18n="nav_cta">Become a partner</a>
+      </div>
+    </nav>
+
+    <!-- Mute Button (fixed top right) -->
+    <button class="mute-btn" id="muteBtn">
+      <svg id="muteIcon" viewBox="0 0 24 24"><path fill="#fff" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+      <svg id="unmuteIcon" viewBox="0 0 24 24" style="display:none;"><path fill="#fff" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+    </button>
+
+    <!-- Hero -->
+    <section class="hero" id="main">
+      <div class="hero-video-container">
+        <video id="heroVideo" autoplay muted loop playsinline>
+          <source src="https://seamless-video-1307504827.cos.ap-shanghai.myqcloud.com/hero-video.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <span class="hero-tag" data-i18n="hero_tag">Automotive Performance Parts</span>
+        <h1 class="hero-title" data-i18n="hero_title">Design Without<br>Compromise</h1>
+        <p class="hero-subtitle" data-i18n="hero_subtitle">Every curve is precisely calculated. Every surface pursues perfection.</p>
+      </div>
+    </section>
+
+    <!-- Inspiration -->
+    <div class="section-header">
+      <span class="section-label">00</span>
+      <h2 class="section-title" data-i18n="section0_title">Inspiration</h2>
+    </div>
+    <section class="inspiration-section" id="inspiration">
+      <div class="inspiration-grid">
+        <a href="insp-1.html" class="inspiration-card" style="text-decoration:none;display:block;">
+          <div class="inspiration-image" style="background-image: url('insp-1.png');">
+            <span class="inspiration-label" data-i18n="insp1_label">About Our Brand</span>
+          </div>
+        </a>
+        <a href="insp-2.html" class="inspiration-card" style="text-decoration:none;display:block;">
+          <div class="inspiration-image" style="background-image: url('insp-3.jpg');">
+            <span class="inspiration-label" data-i18n="insp2_label">About Our Product</span>
+          </div>
+        </a>
+        <a href="insp-3.html" class="inspiration-card" style="text-decoration:none;display:block;">
+          <div class="inspiration-image" style="background-image: url('insp-2.png');">
+            <span class="inspiration-label" data-i18n="insp3_label">About Our Life</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <div class="section-header">
+      <span class="section-label">01</span>
+      <h2 class="section-title" data-i18n="section1_title">Product Lines</h2>
+    </div>
+    <section class="products-section" id="products">
+      <div class="products-grid-3">
+        <a href="prod-1.html" class="product-card" style="text-decoration:none;display:block;color:inherit;">
+          <div class="product-image"><img src="design/1.jpg" alt="Product 1"></div>
+          <div class="product-info">
+            <h3 class="product-name" data-i18n="product1_name">Honda Civic Type R (FL5)</h3>
+            <p class="product-desc" data-i18n="product1_desc">Lower visual center of gravity, increased downforce. Every curve is aerodynamically validated.</p>
+          </div>
+        </a>
+        <a href="prod-2.html" class="product-card" style="text-decoration:none;display:block;color:inherit;">
+          <div class="product-image"><span class="wireframe-label">PRODUCT 02</span></div>
+          <div class="product-info">
+            <h3 class="product-name" data-i18n="product2_name">Coming Soon</h3>
+            <p class="product-desc" data-i18n="product2_desc">We are working on designs that align with our philosophy. Stay tuned.</p>
+          </div>
+        </a>
+        <a href="prod-3.html" class="product-card" style="text-decoration:none;display:block;color:inherit;">
+          <div class="product-image"><span class="wireframe-label">PRODUCT 03</span></div>
+          <div class="product-info">
+            <h3 class="product-name" data-i18n="product3_name">Coming Soon</h3>
+            <p class="product-desc" data-i18n="product3_desc">We are working on designs that align with our philosophy. Stay tuned.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Philosophy -->
+    <div class="section-header">
+      <span class="section-label">02</span>
+      <h2 class="section-title" data-i18n="phil_title">Philosophy</h2>
+    </div>
+    <section class="philosophy-grid" id="philosophy">
+      <a href="phil-1.html" class="phil-card" style="text-decoration:none;display:block;color:inherit;">
+        <div class="phil-img" data-i18n-placeholder="phil1_img">Image placeholder</div>
+        <div class="phil-number">01</div>
+        <h3 class="phil-title" data-i18n="phil1_title">Respect Original Design</h3>
+        <p class="phil-desc" data-i18n="phil1_desc">We respect the original design intent, optimizing based on a thorough understanding of the vehicle's design logic.</p>
+      </a>
+      <a href="phil-2.html" class="phil-card" style="text-decoration:none;display:block;color:inherit;">
+        <div class="phil-img" data-i18n-placeholder="phil2_img">Image placeholder</div>
+        <div class="phil-number">02</div>
+        <h3 class="phil-title" data-i18n="phil2_title">Power of Design</h3>
+        <p class="phil-desc" data-i18n="phil2_desc">Function and aesthetics are never at odds. We employ systematic optimization methods, ensuring every modification preserves original functionality.</p>
+      </a>
+      <a href="phil-3.html" class="phil-card" style="text-decoration:none;display:block;color:inherit;">
+        <div class="phil-img" data-i18n-placeholder="phil3_img">Image placeholder</div>
+        <div class="phil-number">03</div>
+        <h3 class="phil-title" data-i18n="phil3_title">Freedom for Users</h3>
+        <p class="phil-desc" data-i18n="phil3_desc">Modular design grants users freedom - multiple configuration options, easy installation, minimal logistics costs.</p>
+      </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+      <div class="footer-grid">
+        <div>
+          <img src="logo-C.png" alt="SEAMLESS" style="width:120px;margin-bottom:20px;">
+          <p class="footer-desc" data-i18n="footer_desc">Every curve is precisely calculated. Every surface pursues perfection.</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer_products">Products</h4>
+          <ul>
+            <li><a href="prod-1.html" style="color:inherit;text-decoration:none;" data-i18n="footer_p1">Type R (FL5)</a></li>
+            <li><a href="prod-2.html" style="color:inherit;text-decoration:none;" data-i18n="footer_p2">Coming Soon</a></li>
+            <li><a href="prod-3.html" style="color:inherit;text-decoration:none;" data-i18n="footer_p3">Coming Soon</a></li>
+            <li><span data-i18n="footer_p4">Coming Soon</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-i18n="footer_about">About</h4>
+          <ul>
+            <li data-i18n="footer_a1">Philosophy</li>
+            <li data-i18n="footer_a2">Process</li>
+            <li data-i18n="footer_a3">Partners</li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-i18n="footer_contact">Contact</h4>
+          <ul>
+            <li><a href="business.html" style="color:inherit;text-decoration:none;" data-i18n="footer_c1">Business</a></li>
+            <li><a href="support.html" style="color:inherit;text-decoration:none;" data-i18n="footer_c2">Support</a></li>
+            <li><a href="media.html" style="color:inherit;text-decoration:none;" data-i18n="footer_c3">Media</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // Translations
+    const translations = {
+      en: {
+        entry_hint: "Tap to Enter",
+        nav_inspiration: "Inspiration",
+        nav_products: "Products",
+        nav_philosophy: "Philosophy",
+        nav_contact: "Contact",
+        insp1_label: "About Our Brand",
+        insp2_label: "About Our Product",
+        insp3_label: "About Our Life",
+        nav_cta: "Become a partner",
+        hero_tag: "Automotive Performance Parts",
+        hero_title: "Design Without<br>Compromise",
+        hero_subtitle: "Every curve is precisely calculated. Every surface pursues perfection.",
+        section0_title: "Inspiration",
+        section1_title: "Product Lines",
+        product1_name: "Honda Civic Type R (FL5)",
+        product1_desc: "Lower visual center of gravity, increased downforce. Every curve is aerodynamically validated.",
+        product2_name: "Coming Soon",
+        product2_desc: "We are working on designs that align with our philosophy. Stay tuned.",
+        product3_name: "Coming Soon",
+        product3_desc: "We are working on designs that align with our philosophy. Stay tuned.",
+        phil_title: "Philosophy",
+        phil1_title: "Respect Original Design",
+        phil1_desc: "We respect the original design intent, optimizing based on a thorough understanding of the vehicle's design logic.",
+        phil2_title: "Power of Design",
+        phil2_desc: "Function and aesthetics are never at odds. We employ systematic optimization methods, ensuring every modification preserves original functionality.",
+        phil3_title: "Freedom for Users",
+        phil3_desc: "Modular design grants users freedom - multiple configuration options, easy installation, minimal logistics costs.",
+        footer_desc: "Every curve is precisely calculated. Every surface pursues perfection.",
+        footer_products: "Products",
+        footer_p1: "Type R (FL5)",
+        footer_p2: "Coming Soon",
+        footer_p3: "Coming Soon",
+        footer_p4: "Coming Soon",
+        footer_about: "About",
+        footer_a1: "Philosophy",
+        footer_a2: "Process",
+        footer_a3: "Partners",
+        footer_contact: "Contact",
+        footer_c1: "Business",
+        footer_c2: "Support",
+        footer_c3: "Media"
+      },
+      zh: {
+        entry_hint: "点击进入",
+        nav_inspiration: "灵感",
+        nav_products: "产品",
+        nav_philosophy: "理念",
+        nav_contact: "联系",
+        insp1_label: "关于我们的品牌",
+        insp2_label: "关于我们的产品",
+        insp3_label: "关于我们的生活",
+        nav_cta: "成为合伙人",
+        hero_tag: "汽车性能改装件",
+        hero_title: "设计，从不妥协",
+        hero_subtitle: "每一条曲线都经过精密计算，每一张曲面都追求完美无瑕。",
+        section0_title: "灵感",
+        section1_title: "产品系列",
+        product1_name: "本田 思域 Type R (FL5)系列",
+        product1_desc: "降低视觉重心，增强下压力，每一处弧度都经过空气动力学验证。",
+        product2_name: "待探索",
+        product2_desc: "我们尽全力寻找符合我们理念的车型进行设计，敬请期待。",
+        product3_name: "待探索",
+        product3_desc: "我们尽全力寻找符合我们理念的车型进行设计，敬请期待。",
+        phil_title: "品牌理念",
+        phil1_title: "尊重原厂设计",
+        phil1_desc: "尊重原厂设计意图，在充分理解原车设计逻辑的基础上进行优化。",
+        phil2_title: "设计的力量",
+        phil2_desc: "功能与美学从不对立。我们采用系统性优化方法，让每一处改装都不牺牲原厂功能。",
+        phil3_title: "用户的自由",
+        phil3_desc: "模块化设计赋予用户自由——多种搭配方案、便捷拆装、最低物流成本。",
+        footer_desc: "每一处线条都经过精密计算，每一处衔接都追求完美无瑕。",
+        footer_products: "产品",
+        footer_p1: "Type R (FL5)",
+        footer_p2: "待探索",
+        footer_p3: "待探索",
+        footer_p4: "待探索",
+        footer_about: "关于",
+        footer_a1: "品牌理念",
+        footer_a2: "生产工艺",
+        footer_a3: "合作伙伴",
+        footer_contact: "联系",
+        footer_c1: "商务合作",
+        footer_c2: "技术支持",
+        footer_c3: "媒体"
+      },
+      ja: {
+        entry_hint: "タップして入場",
+        nav_inspiration: "インスピレーション",
+        nav_products: "製品",
+        nav_philosophy: "哲学",
+        nav_contact: "お問い合わせ",
+        insp1_label: "私たちのブランドについて",
+        insp2_label: "私たちの製品について",
+        insp3_label: "私たちの生活について",
+        nav_cta: "パートナーになる",
+        hero_tag: "自動車パフォーマンスパーツ",
+        hero_title: "妥協なきデザイン",
+        hero_subtitle: "すべてのカーブは精密に計算されています。すべてのサーフェスは完璧を追求しています。",
+        section0_title: "インスピレーション",
+        section1_title: "製品シリーズ",
+        product1_name: "本田 シビック Type R (FL5)",
+        product1_desc: "視覚的重心を低くし、ダウンフォースを増加。空力検証済みの曲線設計。",
+        product2_name: "準備中",
+        product2_desc: "私たちは理念に合致する車のデザインを発見するために尽力しています。お楽しみください。",
+        product3_name: "準備中",
+        product3_desc: "私たちは理念に合致する車のデザインを発見するために尽力しています。お楽しみください。",
+        phil_title: "哲学",
+        phil1_title: "オリジナルデザインを尊重",
+        phil1_desc: "元のデザインの意図を尊重し、車設計のロジックを十分に理解した上で最適化します。",
+        phil2_title: "デザインの力",
+        phil2_desc: "機能と美学は決して対立しません。システム的な最適化手法を採用します。",
+        phil3_title: "ユーザーの自由",
+        phil3_desc: "モジュラー設計はユーザーに自由を与えます。複数の構成オプション、易しい取付け。",
+        footer_desc: "すべてのカーブは精密に計算されています。すべての接合部は完璧を追求しています。",
+        footer_products: "製品",
+        footer_p1: "Type R (FL5)",
+        footer_p2: "準備中",
+        footer_p3: "準備中",
+        footer_p4: "準備中",
+        footer_about: "会社概要",
+        footer_a1: "ブランド哲学",
+        footer_a2: "製造工程",
+        footer_a3: "パートナー",
+        footer_contact: "お問い合わせ",
+        footer_c1: "ビジネス",
+        footer_c2: "サポート",
+        footer_c3: "メディア"
+      }
+    };
+
+    // Language Switcher
+    function setLanguage(lang) {
+      const t = translations[lang];
+      if (!t) return;
+
+      // Update all elements with data-i18n
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.innerHTML = t[key];
+      });
+
+      // Update buttons
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+
+      // Toggle light font for English hero title
+      document.querySelectorAll('.hero-title').forEach(el => {
+        el.classList.toggle('en', lang === 'en');
+      });
+
+      // Adjust hero-subtitle white-space based on language
+      document.querySelectorAll('.hero-subtitle').forEach(el => {
+        el.style.whiteSpace = lang === 'en' ? 'nowrap' : 'normal';
+      });
+
+      // Update HTML lang
+      document.documentElement.lang = lang === 'ja' ? 'ja' : (lang === 'zh' ? 'zh-CN' : 'en');
+    }
+
+    // Mute/Unmute Toggle
+    let hasInteracted = false;
+    
+    function toggleMute() {
+      const video = document.getElementById('heroVideo');
+      if (!video) return;
+      
+      const muteIcon = document.getElementById('muteIcon');
+      const unmuteIcon = document.getElementById('unmuteIcon');
+      
+      // First interaction - enable audio context
+      if (!hasInteracted) {
+        hasInteracted = true;
+        video.muted = false;
+        video.volume = 1.0;
+        video.play().catch(e => console.log('Play error:', e));
+      }
+      
+      if (video.muted || video.volume === 0) {
+        video.muted = false;
+        video.volume = 1.0;
+        muteIcon.style.display = 'none';
+        unmuteIcon.style.display = 'block';
+      } else {
+        video.muted = true;
+        video.volume = 0;
+        muteIcon.style.display = 'block';
+        unmuteIcon.style.display = 'none';
+      }
+    }
+
+    // Bind button events after DOM loads
+    document.getElementById('btn-en').addEventListener('click', function() { setLanguage('en'); });
+    document.getElementById('btn-zh').addEventListener('click', function() { setLanguage('zh'); });
+    document.getElementById('btn-ja').addEventListener('click', function() { setLanguage('ja'); });
+    
+    const muteBtn = document.getElementById('muteBtn');
+    muteBtn.addEventListener('click', toggleMute);
+
+    // Initialize English as default language on load
+    setLanguage('en');
+  </script>
+</body>
+</html>
